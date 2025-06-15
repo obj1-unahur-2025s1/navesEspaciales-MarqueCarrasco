@@ -33,10 +33,12 @@ class Nave{
 
 class Navebaliza inherits Nave{
     var colorBaliza
+    var cambioDeColor= false
     const coloresPermitidos= #{"verde" , "rojo" , "azul"}
     method cambiarColorDeBaliza(colorNuevo){
         if (coloresPermitidos.constain(colorNuevo)){
-            colorBaliza=  colorNuevo
+            colorBaliza = colorNuevo
+            cambioDeColor = true
         }
         else{  
             self.error("solo se acepta el color : rojo, verde, azul")
@@ -62,13 +64,15 @@ class Navebaliza inherits Nave{
         self.cambiarColorDeBaliza("rojo")
     }
 
+    override  method estaDeRelajo()= self.estaTranquila() and !cambioDeColor
+
 }
 
 class NavePasajero inherits Nave{
     var property  cantPasajeros
     var racionesComida 
     var racionesBebida 
-
+    var totalRacionesServidas
     method racionesComida()= racionesComida
     method racionesBebida()= racionesBebida
     
@@ -90,9 +94,10 @@ class NavePasajero inherits Nave{
         self.acelerar(velocidad * 2)
         racionesComida= self.racionesComida() - self.cantPasajeros()
         racionesBebida= self.racionesBebida() - (self.cantPasajeros() * 2)
-
+        totalRacionesServidas= cantidadDePajeros* 3
     }
 
+    override method estaDeRelajo()= super() and totalRacionesServidas < 50 
 }
 
 class NaveCombate inherits Nave{
@@ -143,7 +148,7 @@ class NaveHospital inherits NavePasajero{
 
     override method recibirAmenaza(){
         super()
-        self.equiparQuirofanos()
+        quirofanos = true
     }
 }
 
